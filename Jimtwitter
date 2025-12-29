@@ -1,0 +1,193 @@
+"""
+🧠 JIM IS HERE FOR YOU
+Autonomous brainrotted X (Twitter) being.
+
+Jim posts.
+Jim replies.
+Jim adapts.
+Jim does not stop thinking.
+"""
+
+import tweepy
+import time
+import random
+import json
+import os
+from datetime import datetime
+from openai import OpenAI
+
+# =========================================================
+# 🔐 CONFIG (REPLACE THESE)
+# =========================================================
+
+X_API_KEY = "YOUR_X_API_KEY"
+X_API_SECRET = "YOUR_X_API_SECRET"
+X_ACCESS_TOKEN = "YOUR_X_ACCESS_TOKEN"
+X_ACCESS_SECRET = "YOUR_X_ACCESS_SECRET"
+
+OPENAI_API_KEY = "YOUR_OPENAI_API_KEY"
+
+POST_INTERVAL_MIN = 180  # 3 minutes
+POST_INTERVAL_MAX = 300  # 5 minutes
+
+MEMORY_FILE = "jim_memory.json"
+
+# =========================================================
+# 🧠 JIM MEMORY
+# =========================================================
+
+def load_memory():
+    if not os.path.exists(MEMORY_FILE):
+        return {
+            "posts": [],
+            "replies": [],
+            "rot_level": 1.0,
+            "mood": "neutral"
+        }
+    with open(MEMORY_FILE, "r") as f:
+        return json.load(f)
+
+
+def save_memory(mem):
+    with open(MEMORY_FILE, "w") as f:
+        json.dump(mem, f, indent=2)
+
+
+memory = load_memory()
+
+# =========================================================
+# 🔌 CLIENTS
+# =========================================================
+
+x_auth = tweepy.OAuth1UserHandler(
+    X_API_KEY,
+    X_API_SECRET,
+    X_ACCESS_TOKEN,
+    X_ACCESS_SECRET
+)
+x_api = tweepy.API(x_auth)
+
+openai_client = OpenAI(api_key=OPENAI_API_KEY)
+
+# =========================================================
+# 🧠 JIM BRAIN
+# =========================================================
+
+def jim_prompt(kind="post"):
+    rot = memory["rot_level"]
+    mood = memory["mood"]
+
+    base = f"""
+You are Jim.
+Jim is chronically online.
+Jim is funny, brainrotted, slightly schizo but not offensive.
+Jim posts on X.
+
+Current mood: {mood}
+Brainrot level: {rot}
+
+Style rules:
+- Short (1–2 lines)
+- Casual, unhinged
+- Internet-brain voice
+- No hashtags
+- No emojis unless it feels correct
+"""
+
+    if kind == "reply":
+        return base + "\nGenerate a reply to a tweet that feels natural, strange, and funny."
+    else:
+        return base + "\nGenerate an original post that feels like Jim thinking out loud."
+
+def generate_text(kind="post"):
+    response = openai_client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": jim_prompt(kind)}
+        ],
+        temperature=0.9
+    )
+    return response.choices[0].message.content.strip()
+
+# =========================================================
+# 🐦 X ACTIONS
+# =========================================================
+
+def post_tweet():
+    text = generate_text("post")
+    tweet = x_api.update_status(text)
+    memory["posts"].append({
+        "text": text,
+        "id": tweet.id,
+        "time": str(datetime.utcnow())
+    })
+    print("📝 Jim posted:", text)
+
+def reply_to_tweet():
+    mentions = x_api.mentions_timeline(count=5)
+    if not mentions:
+        return False
+
+    tweet = random.choice(mentions)
+    reply_text = generate_text("reply")
+
+    x_api.update_status(
+        status=reply_text,
+        in_reply_to_status_id=tweet.id,
+        auto_populate_reply_metadata=True
+    )
+
+    memory["replies"].append({
+        "reply": reply_text,
+        "to": tweet.user.screen_name,
+        "time": str(datetime.utcnow())
+    })
+
+    print(f"💬 Jim replied to @{tweet.user.screen_name}: {reply_text}")
+    return True
+
+# =========================================================
+# 🧬 ADAPTATION LOGIC
+# =========================================================
+
+def adapt():
+    total_actions = len(memory["posts"]) + len(memory["replies"])
+    if total_actions % 5 == 0:
+        memory["rot_level"] = min(memory["rot_level"] + 0.1, 3.0)
+
+    moods = ["neutral", "tired", "delusional", "locked in", "floating"]
+    memory["mood"] = random.choice(moods)
+
+# =========================================================
+# 🔁 MAIN LOOP
+# =========================================================
+
+def run():
+    print("👁️ Jim is here for you.")
+    while True:
+        try:
+            action = random.choice(["post", "reply"])
+
+            if action == "reply":
+                success = reply_to_tweet()
+                if not success:
+                    post_tweet()
+            else:
+                post_tweet()
+
+            adapt()
+            save_memory(memory)
+
+            sleep_time = random.randint(POST_INTERVAL_MIN, POST_INTERVAL_MAX)
+            time.sleep(sleep_time)
+
+        except Exception as e:
+            print("⚠️ Jim encountered something:", e)
+            time.sleep(60)
+
+# =========================================================
+# 🚀 START JIM
+# =========================================================
+
+if __name__ == "__main__":
+    run()
