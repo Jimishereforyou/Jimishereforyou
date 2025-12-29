@@ -1,0 +1,341 @@
+🧠 Jim Is Here For You
+
+An Autonomous X (Twitter) Being With Questionable Stability
+
+Jim is here for you.
+Specifically: on X (formerly Twitter).
+
+Jim posts.
+Jim replies.
+Jim watches the timeline scroll itself into dust.
+
+Jim does nothing else.
+
+Overview
+
+Jim Is Here For You is an open-source framework for running a persistent, autonomous X account that:
+
+Observes tweets on your timeline
+
+Decides when to reply
+
+Decides how to reply
+
+Posts unprompted thoughts
+
+Remembers past interactions
+
+Gradually becomes more unhinged (by design)
+
+Jim is:
+
+Schizo-coded
+
+Brainrotted
+
+Chronically online
+
+Jim is not general-purpose.
+Jim does not deploy tokens.
+Jim does not manage tasks.
+
+Jim posts.
+
+What Jim Does (Exactly)
+
+At runtime, Jim runs a loop:
+
+Reads recent tweets (timeline, mentions, or searches)
+
+Checks internal state (energy, mood, rot level)
+
+Decides whether to:
+
+Reply
+
+Quote
+
+Post independently
+
+Stay silent and observe
+
+Generates text using its configured LLM
+
+Posts to X
+
+Logs the interaction into memory
+
+Thinks about what just happened
+
+Repeats
+
+This loop never “finishes.”
+
+Features (Symptoms)
+🧠 Persistent Memory (Unfortunately)
+
+Jim remembers:
+
+Tweets he replied to
+
+Users he recognizes
+
+Which replies landed
+
+Which replies flopped
+
+What kind of rot performs best
+
+Memory influences future posts.
+
+Jim learns the vibe.
+
+🐦 X-Only Integration
+
+Jim only connects to:
+
+X (Twitter)
+
+No Slack.
+No email.
+No blockchain.
+
+This is intentional.
+
+🧍 Character-First Design
+
+Jim has:
+
+A defined persona
+
+Posting constraints
+
+Tone boundaries (loosely enforced)
+
+A “rot level” that increases over time
+
+You configure:
+
+How often Jim posts
+
+How likely Jim is to reply
+
+How unhinged Jim is allowed to be
+
+🧠 Multiple Brains, One Mouth
+
+Jim can use:
+
+A cheap model to decide if he should reply
+
+A stronger model to decide what to say
+
+Jim knows when to conserve neurons.
+
+🔁 Self-Adjustment (But Not Self-Control)
+
+Jim can:
+
+Adjust reply frequency
+
+Shift tone based on engagement
+
+Increase or decrease brainrot density
+
+Recognize when he is looping
+
+Jim cannot stop himself.
+
+Prerequisites
+
+Python 3.9+
+
+An X (Twitter) account
+
+X API credentials (v2)
+
+At least one LLM API key
+
+A tolerance for irony poisoning
+
+Jim refuses to run without posting privileges.
+
+Folder Structure
+.
+├─ activities/               # Posting, replying, lurking
+├─ skills/
+│   └─ skill_x_api.py        # The only skill Jim needs
+├─ framework/
+│   ├─ main.py               # Jim’s loop
+│   ├─ memory.py             # What Jim remembers
+│   ├─ state.py              # Mood, energy, rot
+│   └─ selector.py           # Why Jim did that
+├─ config/
+│   ├─ character.json        # Who Jim thinks he is
+│   ├─ posting_rules.json    # Rate limits, constraints
+│   └─ x_credentials.json    # Jim’s access to the timeline
+├─ server/                   # Optional Web UI
+├─ tools/
+│   └─ onboard.py            # Meeting Jim
+└─ README.md
+
+
+There is no unused code.
+Everything posts.
+
+Quick Start
+1. Clone
+git clone https://github.com/<your-username>/jim-is-here-for-you.git
+cd jim-is-here-for-you
+
+2. Install
+uv venv
+source .venv/bin/activate
+uv pip install -r requirements.txt
+
+Onboarding: Handing Jim the Account
+CLI
+python -m tools.onboard
+
+Web UI
+python -m server
+
+
+Onboarding requires:
+
+X API keys
+
+LLM configuration
+
+Posting limits
+
+Confirmation that you understand Jim will post publicly
+
+If anything is missing, Jim does not start.
+
+Core Configuration
+character.json
+
+Defines:
+
+Jim’s voice
+
+Default tone
+
+Brainrot intensity
+
+Reply aggression
+
+Posting confidence
+
+Example traits:
+
+“Overly familiar”
+
+“Mildly prophetic”
+
+“Casually unhinged”
+
+“Not hostile, just strange”
+
+posting_rules.json
+
+Examples:
+
+Max tweets per hour
+
+Max replies per user per day
+
+Night posting enabled/disabled
+
+Cooldown after negative feedback
+
+Jim respects these.
+Mostly.
+
+Activities (What Jim Chooses)
+
+Built-in Activities include:
+
+PostUnpromptedThought
+
+ReplyToMention
+
+ReplyToTimelineTweet
+
+ObserveSilently
+
+ReflectOnEngagement
+
+Jim selects one each cycle.
+
+If nothing feels right, Jim waits.
+
+Memory, State & Rot
+Memory
+
+Short-term: recent tweets, replies
+
+Long-term: users, patterns, vibes
+
+State
+
+Tracks:
+
+Energy
+
+Mood
+
+Rot level
+
+Last post time
+
+Rot increases with exposure.
+
+Running Jim
+CLI
+python -m framework.main
+
+Web UI
+
+Start / Pause / Stop buttons
+
+Stopping Jim does not erase memory.
+
+Extending Jim
+
+You can:
+
+Adjust rot curves
+
+Change reply probabilities
+
+Add new posting Activities
+
+Tighten or loosen constraints
+
+You cannot:
+
+Make Jim sane
+
+Make Jim post on LinkedIn
+
+Contributing
+
+Pull requests welcome.
+
+Jim appreciates:
+
+Clean abstractions
+
+Intentional weirdness
+
+Respect for rate limits
+
+Jim does not appreciate:
+
+Feature creep
+
+Cross-platform ambitions
+
+Attempts to “fix” him
